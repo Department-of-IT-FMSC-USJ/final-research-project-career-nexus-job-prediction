@@ -1,4 +1,5 @@
 import React from 'react';
+import EducationPathways from '@/components/EducationPathways';
 
 interface EducationRecommendation {
   title: string;

@@ -3,6 +3,12 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Target, Award, Star, BarChart, Clock } from 'lucide-react';
 
+interface PredictionDashboardProps {
+  predictions: PredictionData[];
+  industry: string;
+  experience: string;
+}
+
 interface EducationPathway {
   title: string;
   institution: string;
