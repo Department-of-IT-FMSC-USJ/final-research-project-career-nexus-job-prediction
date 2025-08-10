@@ -21,6 +21,18 @@ export interface EducationPathway {
   cost: string;
   careerAlignment: number;
   skills: string[];
+
+  jobTitle?: string;
+  currentDemand?: number;
+  year1Growth?: number;
+  year2Growth?: number;
+  totalGrowth?: number;
+  confidenceScore?: number;
+  salaryRange?: string;
+  monthlyPredictions?: MonthlyPrediction[];
+  skillsRequired?: string[];
+  educationPathways?: EducationPathway[];
+  
 }
 
 export interface MonthlyPrediction {

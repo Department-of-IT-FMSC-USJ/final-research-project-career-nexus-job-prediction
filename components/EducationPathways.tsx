@@ -1,5 +1,4 @@
 import React from 'react';
-import EducationPathways from '@/components/EducationPathways';
 
 interface EducationRecommendation {
   title: string;
@@ -13,12 +12,20 @@ interface EducationRecommendation {
   description: string;
 }
 
-interface EducationPathwayProps {
+interface EducationPathway {
+  institution: string;
+  alignment: string;
+  jobTitle?: string;
+  currentDemand?: number;
+  // ... other fields from JobDemandForecaster (e.g., year1Growth, etc.)
+}
+
+interface EducationRecommendationsProps {
   industry: string;
   experience: string;
 }
 
-const EducationPathway: React.FC<EducationPathwayProps> = ({ industry, experience }) => {
+const EducationRecommendations: React.FC<EducationRecommendationsProps> = ({ industry, experience }) => {
   const generateEducationRecommendations = (): EducationRecommendation[] => {
     const baseRecommendations: Record<string, EducationRecommendation[]> = {
       technology: [
@@ -106,7 +113,7 @@ const EducationPathway: React.FC<EducationPathwayProps> = ({ industry, experienc
       ]
     };
 
-    return baseRecommendations[industry] || baseRecommendations.technology;
+    return baseRecommendations[industry.toLowerCase()] || baseRecommendations.technology;
   };
 
   const recommendations = generateEducationRecommendations();
@@ -184,4 +191,4 @@ const EducationPathway: React.FC<EducationPathwayProps> = ({ industry, experienc
   );
 };
 
-export default EducationPathway;
+export default EducationRecommendations;
