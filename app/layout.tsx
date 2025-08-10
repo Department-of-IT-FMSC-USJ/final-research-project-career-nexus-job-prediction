@@ -5,8 +5,8 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'CareerNexus - AI Job Market Predictions',
-  description: 'Predict future job trends for the next 2 years with advanced AI models',
+  title: 'JobPredictor AI - Predict Your Career Future',
+  description: 'Get data-driven insights about job market trends, salary expectations, and skill requirements for your chosen industry.',
 };
 
 export default function RootLayout({
