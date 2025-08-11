@@ -3,16 +3,28 @@ import { Target, TrendingUp, Clock, Star } from 'lucide-react';
 
 interface PredictionData {
   jobTitle: string;
-  currentDemand: number;
-  predictedGrowth: number;
-  confidenceScore: number;
   salaryRange: string;
-  skillsRequired: string[];
+  currentDemand: number;
+  year1Growth: number;
+  year2Growth: number;
+  totalGrowth: number;
+  confidenceScore: number;
+  skills: string[];
+  educationPathways: {
+    title: string;
+    institution: string;
+    duration: string;
+    alignment: number;
+  }[];
+  monthlyPredictions: {
+    month: string;
+    demand: number;
+  }[];
 }
 
 interface SkillsRecommendationProps {
-  predictions: PredictionData[];
   industry: string;
+  experience: string;
 }
 
 interface SkillRecommendation {
@@ -24,30 +36,43 @@ interface SkillRecommendation {
   relatedJobs: string[];
 }
 
-const SkillsRecommendation: React.FC<SkillsRecommendationProps> = ({ predictions, industry }) => {
-  // Generate skill recommendations based on predictions
+const SkillsRecommendation: React.FC<SkillsRecommendationProps> = ({ industry, experience }) => {
+  // Generate skill recommendations based on industry and experience
   const generateSkillRecommendations = (): SkillRecommendation[] => {
-    const allSkills = predictions.flatMap(pred => pred.skillsRequired);
-    const skillFrequency = allSkills.reduce((acc, skill) => {
-      acc[skill] = (acc[skill] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    // Mock data based on industry
+    const industrySkills: Record<string, string[]> = {
+      technology: ['JavaScript', 'Python', 'React', 'AWS', 'Docker', 'SQL', 'Node.js', 'Machine Learning'],
+      healthcare: ['Data Analysis', 'Healthcare Management', 'Patient Care', 'Medical Software', 'Compliance'],
+      finance: ['Financial Analysis', 'Risk Management', 'Excel', 'SQL', 'Python', 'Tableau'],
+      education: ['Curriculum Design', 'Educational Technology', 'Assessment', 'Learning Management Systems'],
+      manufacturing: ['Lean Manufacturing', 'Quality Control', 'Process Improvement', 'Safety Management'],
+      retail: ['Customer Service', 'Inventory Management', 'Sales', 'E-commerce', 'Marketing'],
+      consulting: ['Business Analysis', 'Project Management', 'Strategic Planning', 'Communication'],
+      construction: ['Project Management', 'Safety Management', 'CAD', 'Construction Management']
+    };
 
-    const topSkills = Object.entries(skillFrequency)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, 8)
-      .map(([skill]) => skill);
+    // Mock job titles for related jobs based on industry
+    const industryJobs: Record<string, string[]> = {
+      technology: ['Product Manager', 'Machine Learning Engineer', 'Cloud Architect', 'Data Scientist', 'DevOps Engineer'],
+      healthcare: ['Healthcare Manager', 'Medical Data Analyst', 'Healthcare IT Specialist', 'Clinical Research Coordinator', 'Health Information Manager'],
+      finance: ['Financial Analyst', 'Risk Manager', 'Investment Advisor', 'Credit Analyst', 'Portfolio Manager'],
+      education: ['Education Technology Specialist', 'Curriculum Developer', 'Academic Advisor', 'Learning Analytics Specialist', 'Training Manager'],
+      manufacturing: ['Production Manager', 'Quality Assurance Engineer', 'Supply Chain Analyst', 'Manufacturing Engineer', 'Operations Supervisor'],
+      retail: ['E-commerce Manager', 'Retail Analyst', 'Customer Experience Manager', 'Inventory Planner', 'Digital Marketing Specialist'],
+      consulting: ['Business Analyst', 'Management Consultant', 'Strategy Advisor', 'Process Improvement Specialist', 'Change Management Consultant'],
+      construction: ['Project Manager', 'Construction Engineer', 'Safety Coordinator', 'BIM Specialist', 'Construction Analyst']
+    };
 
-    return topSkills.map(skill => ({
+    const skills = industrySkills[industry] || industrySkills.technology;
+    const mockJobs = industryJobs[industry] || industryJobs.technology;
+
+    return skills.slice(0, 8).map(skill => ({
       skill,
-      demandGrowth: Math.floor(Math.random() * 30) + 15,
-      currentDemand: Math.floor(Math.random() * 40) + 60,
+      demandGrowth: Math.round((Math.random() * 30 + 15) * 100) / 100,
+      currentDemand: Math.round((Math.random() * 40 + 60) * 100) / 100,
       learningTime: getLearningTime(skill),
       difficulty: getDifficulty(skill),
-      relatedJobs: predictions
-        .filter(pred => pred.skillsRequired.includes(skill))
-        .map(pred => pred.jobTitle)
-        .slice(0, 3)
+      relatedJobs: mockJobs.slice(0, 3)
     }));
   };
 
@@ -62,14 +87,24 @@ const SkillsRecommendation: React.FC<SkillsRecommendationProps> = ({ predictions
       'Docker': '1-2 months',
       'Node.js': '2-4 months',
       'Data Analysis': '3-6 months',
-      'Project Management': '2-4 months'
+      'Project Management': '2-4 months',
+      'Healthcare Management': '3-6 months',
+      'Financial Analysis': '2-4 months',
+      'Excel': '1-2 months',
+      'Tableau': '2-3 months',
+      'Risk Management': '4-6 months',
+      'Customer Service': '1-2 months',
+      'Business Analysis': '3-5 months',
+      'CAD': '3-6 months',
+      'Quality Control': '2-4 months',
+      'Safety Management': '2-3 months'
     };
     return timeMap[skill] || '3-6 months';
   };
 
   const getDifficulty = (skill: string): 'Beginner' | 'Intermediate' | 'Advanced' => {
-    const advancedSkills = ['Machine Learning', 'AWS', 'Docker', 'Kubernetes'];
-    const intermediateSkills = ['React', 'Node.js', 'Data Analysis', 'Python'];
+    const advancedSkills = ['Machine Learning', 'AWS', 'Docker', 'Kubernetes', 'Risk Management', 'CAD'];
+    const intermediateSkills = ['React', 'Node.js', 'Data Analysis', 'Python', 'Project Management', 'Financial Analysis', 'Healthcare Management', 'Business Analysis', 'Tableau'];
     
     if (advancedSkills.includes(skill)) return 'Advanced';
     if (intermediateSkills.includes(skill)) return 'Intermediate';
@@ -123,7 +158,7 @@ const SkillsRecommendation: React.FC<SkillsRecommendationProps> = ({ predictions
               <div className="text-right">
                 <div className="flex items-center space-x-1 text-green-600 mb-1">
                   <TrendingUp className="h-4 w-4" />
-                  <span className="font-semibold">+{recommendation.demandGrowth}%</span>
+                  <span className="font-semibold">+{recommendation.demandGrowth.toFixed(2)}%</span>
                 </div>
                 <p className="text-xs text-gray-500">Demand growth</p>
               </div>
@@ -133,7 +168,7 @@ const SkillsRecommendation: React.FC<SkillsRecommendationProps> = ({ predictions
             <div className="mb-4">
               <div className="flex justify-between text-sm text-gray-600 mb-1">
                 <span>Current Market Demand</span>
-                <span>{recommendation.currentDemand}%</span>
+                <span>{recommendation.currentDemand.toFixed(2)}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div 

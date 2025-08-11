@@ -58,8 +58,8 @@ const PredictionDashboard: React.FC<PredictionDashboardProps> = ({
   };
 
   const average2YearGrowth = predictions.length > 0 
-    ? (predictions.reduce((acc, curr) => acc + curr.totalGrowth, 0) / predictions.length).toFixed(1) 
-    : '0';
+    ? (predictions.reduce((acc, curr) => acc + curr.totalGrowth, 0) / predictions.length).toFixed(2) 
+    : '0.00';
 
   const highGrowthJobs = predictions.filter(p => p.totalGrowth >= 10).length;
 
@@ -137,7 +137,7 @@ const PredictionDashboard: React.FC<PredictionDashboardProps> = ({
                     </div>
                     <div className="flex items-center space-x-1">
                       <Star className="h-4 w-4" />
-                      <span>Confidence: {prediction.confidenceScore}%</span>
+                      <span>Confidence: {prediction.confidenceScore.toFixed(2)}%</span>
                     </div>
                   </div>
                 </div>
@@ -145,7 +145,7 @@ const PredictionDashboard: React.FC<PredictionDashboardProps> = ({
                   <div className={`flex items-center justify-end space-x-1 ${getGrowthColor(prediction.totalGrowth)}`}>
                     <GrowthIcon className="h-5 w-5" />
                     <span className="font-bold text-lg">
-                      {prediction.totalGrowth >= 0 ? '+' : ''}{prediction.totalGrowth}%
+                      {prediction.totalGrowth >= 0 ? '+' : ''}{prediction.totalGrowth.toFixed(2)}%
                     </span>
                   </div>
                   <p className="text-xs text-gray-500">2-year total growth</p>
@@ -157,13 +157,13 @@ const PredictionDashboard: React.FC<PredictionDashboardProps> = ({
                   <div className={`flex items-center space-x-1 ${getGrowthColor(prediction.year1Growth)}`}>
                     <Year1Icon className="h-4 w-4" />
                     <span className="font-medium">
-                      {prediction.year1Growth >= 0 ? '+' : ''}{prediction.year1Growth}%
+                      {prediction.year1Growth >= 0 ? '+' : ''}{prediction.year1Growth.toFixed(2)}%
                     </span>
                   </div>
                   <div className={`flex items-center space-x-1 ${getGrowthColor(prediction.year2Growth)}`}>
                     <Year2Icon className="h-4 w-4" />
                     <span className="font-medium">
-                      {prediction.year2Growth >= 0 ? '+' : ''}{prediction.year2Growth}%
+                      {prediction.year2Growth >= 0 ? '+' : ''}{prediction.year2Growth.toFixed(2)}%
                     </span>
                   </div>
                 </div>
@@ -181,7 +181,7 @@ const PredictionDashboard: React.FC<PredictionDashboardProps> = ({
                     style={{ width: `${prediction.currentDemand}%` }}
                   ></div>
                 </div>
-                <p className="text-right text-xs text-gray-500 mt-1">{prediction.currentDemand}/100</p>
+                <p className="text-right text-xs text-gray-500 mt-1">{prediction.currentDemand.toFixed(2)}/100</p>
               </div>
 
               <div className="mb-4">

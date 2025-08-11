@@ -1,0 +1,16 @@
+# Python requirements for ARIMA model predictions
+# Install with: pip install -r requirements.txt
+
+pandas>=1.3.0
+numpy>=1.21.0
+scikit-learn>=1.0.0
+joblib>=1.0.0
+
+# For ARIMA models - choose based on your model library:
+statsmodels>=0.13.0    # If using statsmodels ARIMA
+pmdarima>=1.8.0        # If using auto_arima from pmdarima
+
+# Alternative ML libraries (uncomment if needed):
+# tensorflow>=2.8.0    # If models were created with TensorFlow
+# torch>=1.11.0        # If models were created with PyTorch
+# xgboost>=1.5.0       # If using XGBoost models
